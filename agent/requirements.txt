@@ -25,3 +25,4 @@ requests
 pydantic
 langchain_mcp_adapters
 openai<1.0
+griffe<0.37.0
