@@ -24,3 +24,4 @@ httpx
 requests
 pydantic
 langchain_mcp_adapters
+openai<1.0
