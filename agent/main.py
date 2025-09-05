@@ -49,7 +49,10 @@ app = FastAPI(title="Math Routing Agent API", version="1.0.0")
 # Add CORS middleware for React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_origins=[
+        "http://localhost:3000",
+        "https://ai-planet-assignment-mu.vercel.app/",
+    ],  # React dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
