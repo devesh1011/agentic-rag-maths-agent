@@ -22,3 +22,4 @@ certifi
 httpx
 requests
 pydantic
+langchain_mcp_adapters
