@@ -1,0 +1,20 @@
+{
+  "example_1_perfect": {
+    "question": "What is the derivative of x^2?",
+    "context": "{\"solution\": \"The derivative of x^n is nx^(n-1). For x^2, n=2, so the derivative is 2x.\", \"answer\": \"2x\", \"source\": \"Knowledge Base\"}",
+    "proposed_answer": "📚 **Step-by-Step Solution**:\n1. Identify the function, which is f(x) = x^2.\n2. Apply the power rule for differentiation, which states that d/dx(x^n) = nx^(n-1).\n3. In this case, n=2. So, the derivative is 2*x^(2-1) = 2x.\n\n💡 **Key Concepts**:\n- Power Rule for Differentiation\n\n🔍 **Source**:\n- Knowledge Base",
+    "human_feedback": "Looks perfect!"
+  },
+  "example_2_reformat": {
+    "question": "Find the integral of 1/x dx",
+    "context": "{\"solution\": \"The integral of 1/x is the natural logarithm of the absolute value of x, plus a constant C.\", \"answer\": \"ln|x| + C\", \"source\": \"Knowledge Base\"}",
+    "proposed_answer": "The answer is ln|x| + C, found from the knowledge base.",
+    "human_feedback": "📚 **Step-by-Step Solution**:\n1. The integral of 1/x with respect to x is a standard calculus formula.\n2. The result is the natural logarithm of the absolute value of x, plus the constant of integration, C.\n3. Final Answer: ln|x| + C.\n\n💡 **Key Concepts**:\n- Standard Integrals\n- Natural Logarithm\n\n🔍 **Source**:\n- Knowledge Base"
+  },
+  "example_3_clarity": {
+    "question": "Explain the product rule.",
+    "context": "{\"solution\": \"The product rule is (uv)' = u'v + uv'.\", \"answer\": \"(uv)' = u'v + uv'\", \"source\": \"Web Search\"}",
+    "proposed_answer": "📚 **Step-by-Step Solution**:\nThe derivative of f(x)g(x) is f'(x)g(x) + f(x)g'(x).\n\n💡 **Key Concepts**:\n- Product Rule\n\n🔍 **Source**:\n- Web Search",
+    "human_feedback": "📚 **Step-by-Step Solution**:\nThe product rule is a formula used to find the derivative of a product of two functions.\n1. Let's say you have two functions, f(x) and g(x), that are being multiplied together.\n2. The rule is: 'The derivative of the first function times the second, plus the first function times the derivative of the second.'\n3. Formula: d/dx[f(x)g(x)] = f'(x)g(x) + f(x)g'(x).\n\n💡 **Key Concepts**:\n- Differentiation\n- Product Rule\n\n🔍 **Source**:\n- Web Search"
+  }
+}
