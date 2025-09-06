@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  maths-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LANGSMITH_TRACING=${LANGSMITH_TRACING}
+      - LANGSMITH_ENDPOINT=${LANGSMITH_ENDPOINT}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      - LANGSMITH_PROJECT=${LANGSMITH_PROJECT}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - HUGGING_FACE_TOKEN=${HUGGING_FACE_TOKEN}
+    env_file:
+      - .env
+    restart: unless-stopped
