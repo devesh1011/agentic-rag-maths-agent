@@ -125,14 +125,26 @@ async def chat_endpoint(request: ChatRequest):
 
         config = {"configurable": {"thread_id": session_id}}
 
-        # Run the graph
-        final_state = None
-        for step_output in math_routing_agent.stream(initial_state, config=config):
-            final_state = step_output
+        # Run the graph with interrupt handling
+        try:
+            final_state = None
+            for step_output in math_routing_agent.stream(initial_state, config=config):
+                final_state = step_output
 
-        # Get the final state
-        state_snapshot = math_routing_agent.get_state(config)
-        final_values = state_snapshot.values
+            # If we reach here, the graph completed without interruption
+            # Get the final state
+            state_snapshot = math_routing_agent.get_state(config)
+            final_values = state_snapshot.values
+
+        except Exception as e:
+            # Handle interrupt or other exceptions
+            if "interrupt" in str(e).lower() or "graph paused" in str(e).lower():
+                # Graph was interrupted for feedback
+                state_snapshot = math_routing_agent.get_state(config)
+                final_values = state_snapshot.values
+            else:
+                # Re-raise other exceptions
+                raise e
 
         # Check if guardrails ended the conversation
         if final_values.get("end"):
@@ -143,14 +155,30 @@ async def chat_endpoint(request: ChatRequest):
                 status="completed",
             )
 
-        # If we reach here, the agent has an answer ready for feedback
+        # If we have an answer, return it directly (API mode)
         proposed_answer = final_values.get("answer", "")
+        if proposed_answer:
+            return ChatResponse(
+                response=proposed_answer,
+                session_id=session_id,
+                status="completed",
+                proposed_answer=proposed_answer,
+            )
 
+        # Fallback: return the last message
+        final_message = final_values["messages"][-1] if final_values["messages"] else None
+        if final_message:
+            return ChatResponse(
+                response=final_message.content,
+                session_id=session_id,
+                status="completed",
+            )
+
+        # If nothing else, return a generic response
         return ChatResponse(
-            response="I have prepared an answer for you. Please review it below.",
+            response="I have processed your request but couldn't generate a response.",
             session_id=session_id,
-            status="waiting_for_feedback",
-            proposed_answer=proposed_answer,
+            status="completed",
         )
 
     except Exception as e:
