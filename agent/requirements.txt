@@ -5,6 +5,4 @@ langchain-qdrant
 langchain-google-genai
 nest-asyncio 
 dspy 
-fastapi
-guardrails-ai>=0.5.13 
-langchain_openai
+fastapix
