@@ -220,8 +220,9 @@ def input_guardrails(state: AgentState):
     last_message = state["messages"][-1]
     original_content = last_message.content
     outcome = input_guard.validate(original_content)
-    final_content = outcome.validated_output
-    if final_content != original_content:
+    if not outcome.is_valid:
+        # Use fixed_value from our custom ValidationResult
+        final_content = outcome.fixed_value
         state["messages"].append(AIMessage(content=final_content))
         state["end"] = True
     return state
@@ -235,14 +236,14 @@ def output_guardrails(state: AgentState):
     last_message = state["messages"][-1]
 
     try:
-        validated_output = output_guard.parse(
-            llm_output=last_message.content,
-        )
+        # Use our custom validation instead of parse method
+        validation_result = output_guard.validate(last_message.content)
 
-        state["messages"][-1].content = validated_output.validated_output
+        if not validation_result.is_valid:
+            state["messages"][-1].content = validation_result.fixed_value
+        # If validation passes, keep the original content
 
     except Exception as e:
-
         state["messages"][-1].content = (
             f"Output Guardrail Error: The agent's response failed validation.\n"
             f"Error: {e}"
@@ -286,7 +287,7 @@ def should_continue(state: AgentState):
     if hasattr(last_message, "tool_calls") and last_message.tool_calls:
         return "tools"
     else:
-        # Agent is done, route to the output guardrail check first.
+        # For API usage, skip feedback and go directly to end
         return "output_guardrails"
 
 
@@ -298,10 +299,9 @@ def prepare_for_feedback(state: AgentState):
 
 
 def get_feedback(state: AgentState):
-    """Pauses the graph to present the agent's answer and wait for human feedback."""
-
-    human_input = interrupt({"answer_to_review": state["answer"]})
-    return {"user_feedback": human_input}
+    """For API usage, skip feedback and return the answer directly."""
+    # Instead of interrupting, just return the answer
+    return {"user_feedback": "auto_approved"}
 
 
 # Bulding the Workflow
